@@ -18,7 +18,7 @@ public class AlbumRepositoryJDBC {
 
     public Album createAlbum(Album album) {
         String sql = """
-                    INSERT INTO Album (labelId, title, genre, releaseYear, coverImage)
+                    INSERT INTO Album (labelid, title, genre, releaseyear, coverimage)
                     VALUES (:labelId, :title, :genre, :releaseYear, :coverImage)
                 """;
 
@@ -38,15 +38,15 @@ public class AlbumRepositoryJDBC {
         String sql = """
                     SELECT * FROM Album WHERE id = :albumId
                 """;
-        var params = Map.of("albumId", id);
+        var params = Map.of("albumid", id);
         var result = jdbcTemplate.query(sql, params,
                 (rs, rowNum) -> new Album(
                         rs.getLong("id"),
-                        rs.getLong("labelId"),
+                        rs.getLong("labelid"),
                         rs.getString("title"),
                         rs.getString("genre"),
-                        rs.getInt("releaseYear"),
-                        rs.getString("coverImage")
+                        rs.getInt("releaseyear"),
+                        rs.getString("coverimage")
                 ));
         return result.isEmpty() ? null : result.getFirst();
     }
@@ -58,17 +58,17 @@ public class AlbumRepositoryJDBC {
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> new Album(
                 rs.getLong("id"),
-                rs.getLong("labelId"),
+                rs.getLong("labelid"),
                 rs.getString("title"),
                 rs.getString("genre"),
-                rs.getInt("releaseYear"),
-                rs.getString("coverImage")
+                rs.getInt("releaseyear"),
+                rs.getString("coverimage")
         ));
     }
 
     public Album updateAlbum(Album album) {
         String sql = """
-                    UPDATE Album SET title = :title, genre = :genre, releaseYear = :releaseYear, coverImage = :coverImage
+                    UPDATE Album SET title = :title, genre = :genre, releaseyear = :releaseYear, coverimage = :coverImage
                     WHERE id = :id
                 """;
 
@@ -76,8 +76,8 @@ public class AlbumRepositoryJDBC {
                 "id", album.id(),
                 "title", album.title(),
                 "genre", album.genre(),
-                "releaseYear", album.releaseYear(),
-                "coverImage", album.coverImage()
+                "releaseyear", album.releaseYear(),
+                "coverimage", album.coverImage()
         );
 
         jdbcTemplate.update(sql, params);
@@ -88,7 +88,7 @@ public class AlbumRepositoryJDBC {
         String sql = """
                     DELETE FROM Album WHERE id = :albumId
                 """;
-        var params = Map.of("albumId", id);
+        var params = Map.of("albumid", id);
         return jdbcTemplate.update(sql, params) > 0;
     }
 }
