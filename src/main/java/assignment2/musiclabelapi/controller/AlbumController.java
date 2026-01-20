@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 public class AlbumController {
 
-    private AlbumService albumService;
+    private final AlbumService albumService;
 
     public AlbumController(AlbumService albumService) {
         this.albumService = albumService;
