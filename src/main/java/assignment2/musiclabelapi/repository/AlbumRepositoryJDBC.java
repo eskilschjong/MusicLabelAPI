@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.security.PublicKey;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -48,6 +49,21 @@ public class AlbumRepositoryJDBC {
                         rs.getString("coverImage")
                 ));
         return result.isEmpty() ? null : result.getFirst();
+    }
+
+    public List<Album> getAllAlbusms() {
+        String sql = """
+                    SELECT * FROM Album
+                """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new Album(
+                rs.getLong("id"),
+                rs.getLong("labelId"),
+                rs.getString("title"),
+                rs.getString("genre"),
+                rs.getInt("releaseYear"),
+                rs.getString("coverImage")
+        ));
     }
 
     public Album updateAlbum(Album album) {

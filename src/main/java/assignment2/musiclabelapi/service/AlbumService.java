@@ -4,6 +4,8 @@ import assignment2.musiclabelapi.model.Album;
 import assignment2.musiclabelapi.repository.AlbumRepositoryJDBC;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AlbumService {
     
@@ -19,6 +21,10 @@ public class AlbumService {
 
     public Album getAlbumById(long id) {
         return albumRepositoryJDBC.getAlbumById(id);
+    }
+
+    public List<Album> getAllAlbums() {
+        return albumRepositoryJDBC.getAllAlbusms();
     }
 
     public Album updateAlbum(Album album) {
