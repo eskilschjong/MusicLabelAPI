@@ -1,8 +1,5 @@
--- Create the database
-CREATE DATABASE musicDb;
 
--- Connect to the database
-\c musicDb;
+CREATE DATABASE musicdb;
 
 CREATE TABLE MusicLabel (
                             id SERIAL PRIMARY KEY,
