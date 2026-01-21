@@ -43,4 +43,9 @@ public class AlbumController {
         Album updated = albumService.updateAlbum(id, album);
         return ResponseEntity.ok(updated);
     }
+
+    @DeleteMapping("/album/{id}")
+    public ResponseEntity<Boolean> deleteAlbumById(@PathVariable Long id) {
+        return ResponseEntity.ok(albumService.deleteAlbumById(id));
+    }
 }
