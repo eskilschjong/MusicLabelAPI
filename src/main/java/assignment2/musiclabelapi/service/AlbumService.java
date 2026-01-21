@@ -28,8 +28,12 @@ public class AlbumService {
     }
 
     public Album updateAlbum(long id, Album album) {
-        album.setId(id);
-        return albumRepository.save(album);
+        Album existingAlbum = albumRepository.findById(id).orElse(null);
+        if (existingAlbum != null) {
+            album.setId(id);
+            return albumRepository.save(album);
+        }
+        return null;
     }
 
     public boolean deleteAlbumById(long id) {

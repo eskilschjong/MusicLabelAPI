@@ -1,6 +1,9 @@
 package assignment2.musiclabelapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "musiclabel")
@@ -11,6 +14,10 @@ public class MusicLabel {
 
     private String name;
     private String text;
+
+    @OneToMany(mappedBy = "musicLabel", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("musicLabel")
+    private List<Album> albums;
 
     // Default constructor for Hibernate
     public MusicLabel() {
@@ -45,5 +52,13 @@ public class MusicLabel {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public List<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
     }
 }
