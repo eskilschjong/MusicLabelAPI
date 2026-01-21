@@ -1,6 +1,9 @@
 package assignment2.musiclabelapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "artist")
@@ -18,6 +21,10 @@ public class Artist {
     private String coverImage;
 
     private String biography;
+
+    @ManyToMany(mappedBy = "artists")
+    @JsonIgnoreProperties("artists")
+    private List<Album> albums;
 
     // Default constructor for Hibernate
     public Artist() {
@@ -70,5 +77,13 @@ public class Artist {
 
     public void setBiography(String biography) {
         this.biography = biography;
+    }
+
+    public List<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
     }
 }
