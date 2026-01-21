@@ -25,7 +25,7 @@ CREATE TABLE Album (
 );
 
 CREATE TABLE AlbumArtist (
-                             albumId BIGINT REFERENCES Album(id),
-                             artistId BIGINT REFERENCES Artist(id),
+                             albumId BIGINT REFERENCES Album(id) ON DELETE CASCADE,
+                             artistId BIGINT REFERENCES Artist(id) ON DELETE CASCADE,
                              PRIMARY KEY (albumId, artistId)
 );

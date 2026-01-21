@@ -27,8 +27,8 @@ public class AlbumService {
         return albumRepository.findAll();
     }
 
-    public Album updateAlbum(Album album) {
-        // JPA uses .save() for both creating and updating
+    public Album updateAlbum(long id, Album album) {
+        album.setId(id);
         return albumRepository.save(album);
     }
 
