@@ -1,7 +1,9 @@
 package assignment2.musiclabelapi.controller;
 
 import assignment2.musiclabelapi.DTO.AlbumReadDTO;
+import assignment2.musiclabelapi.DTO.AlbumWriteDTO;
 import assignment2.musiclabelapi.DTOConverter.AlbumDTOConverter;
+import assignment2.musiclabelapi.DTOConverter.AlbumEntityConverter;
 import assignment2.musiclabelapi.model.Album;
 import assignment2.musiclabelapi.service.AlbumService;
 import org.springframework.http.HttpStatus;
@@ -14,49 +16,49 @@ import java.util.List;
 @RequestMapping("/album")
 public class AlbumController {
 
-    private AlbumService service;
-    private AlbumDTOConverter converter;
+    private final AlbumService service;
+    private final AlbumDTOConverter converter;
+    private final AlbumEntityConverter entityConverter;
 
-    public AlbumController(AlbumService service, AlbumDTOConverter converter) {
+    public AlbumController(AlbumService service, AlbumDTOConverter converter, AlbumEntityConverter entityConverter) {
         this.service = service;
         this.converter = converter;
+        this.entityConverter = entityConverter;
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Album>> getAllAlbums() {
+    public ResponseEntity<List<AlbumReadDTO>> getAllAlbums() {
         var albums = service.getAllAlbums();
-        return ResponseEntity.ok(albums);
+        var dtoAlbums = albums.stream()
+                .map(converter::convertToDTO)
+                .toList();
+        return ResponseEntity.ok(dtoAlbums);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Album> getAlbumById(@PathVariable(required = false) Long id) {
+    public ResponseEntity<AlbumReadDTO> getAlbumById(@PathVariable(required = false) Long id) {
         if (id == null) {
             return ResponseEntity.badRequest().build();
         }
         var album = service.getAlbumById(id);
-        return ResponseEntity.ok(album);
-    }
-
-    @GetMapping("/DTO/{id}")
-    public ResponseEntity<AlbumReadDTO> getAlbumByIdDTO(@PathVariable Long id) {
-
-        var album = service.getAlbumById(id);
-
         var dtoAlbum = converter.convertToDTO(album);
-
         return ResponseEntity.ok(dtoAlbum);
     }
 
     @PostMapping
-    public ResponseEntity<Album> createAlbum(@RequestBody Album album) {
+    public ResponseEntity<AlbumReadDTO> createAlbum(@RequestBody AlbumWriteDTO albumDTO) {
+        Album album = entityConverter.convertToEntity(albumDTO);
         Album created = service.createAlbum(album);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        AlbumReadDTO dtoAlbum = converter.convertToDTO(created);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dtoAlbum);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Album> updateAlbum(@PathVariable Long id, @RequestBody Album album) {
+    public ResponseEntity<AlbumReadDTO> updateAlbum(@PathVariable Long id, @RequestBody AlbumWriteDTO albumDTO) {
+        Album album = entityConverter.convertToEntity(albumDTO);
         Album updated = service.updateAlbum(id, album);
-        return ResponseEntity.ok(updated);
+        AlbumReadDTO dtoAlbum = converter.convertToDTO(updated);
+        return ResponseEntity.ok(dtoAlbum);
     }
 
     @DeleteMapping("/{id}")
