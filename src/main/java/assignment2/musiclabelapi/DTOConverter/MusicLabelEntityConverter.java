@@ -4,9 +4,10 @@ import assignment2.musiclabelapi.DTO.MusicLabelWriteDTO;
 import assignment2.musiclabelapi.model.Album;
 import assignment2.musiclabelapi.model.MusicLabel;
 import assignment2.musiclabelapi.service.AlbumService;
-
+import org.springframework.stereotype.Component;
 import java.util.List;
 
+@Component
 public class MusicLabelEntityConverter {
 
     private final AlbumService albumService;
