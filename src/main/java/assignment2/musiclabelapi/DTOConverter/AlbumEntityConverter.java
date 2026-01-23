@@ -36,7 +36,7 @@ public class AlbumEntityConverter {
         if (dto.getArtistIds() != null) {
             List<Artist> artists = dto.getArtistIds().stream()
                     .map(artistService::getArtistById)
-                    .collect(Collectors.toList());
+                    .toList();
             album.setArtists(artists);
         }
 
