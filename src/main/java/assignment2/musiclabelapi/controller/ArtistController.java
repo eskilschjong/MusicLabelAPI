@@ -6,7 +6,6 @@ import assignment2.musiclabelapi.DTOConverter.ArtistEntityConverter;
 import assignment2.musiclabelapi.DTO.ArtistReadDTO;
 import assignment2.musiclabelapi.DTO.ArtistWriteDTO;
 import assignment2.musiclabelapi.model.Artist;
-import assignment2.musiclabelapi.service.AlbumService;
 import assignment2.musiclabelapi.service.ArtistService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -13,7 +13,7 @@ public class MusicLabel {
     private Long id;
 
     private String name;
-    private String text;
+    private String description;
 
     @OneToMany(mappedBy = "musicLabel", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("musicLabel")
@@ -26,7 +26,7 @@ public class MusicLabel {
     public MusicLabel(Long id, String name, String text) {
         this.id = id;
         this.name = name;
-        this.text = text;
+        this.description = text;
     }
 
     // Getters and Setters
@@ -46,12 +46,12 @@ public class MusicLabel {
         this.name = name;
     }
 
-    public String getText() {
-        return text;
+    public String getDescription() {
+        return description;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setDescription(String text) {
+        this.description = text;
     }
 
     public List<Album> getAlbums() {
