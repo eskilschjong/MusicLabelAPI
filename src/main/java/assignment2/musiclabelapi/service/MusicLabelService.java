@@ -58,10 +58,18 @@ public class MusicLabelService {
                 .filter(Objects::nonNull)
                 .toList();
 
-        musicLabel.setAlbums(new ArrayList<>());
-        musicLabel.getAlbums().clear();
-        musicLabel.getAlbums().addAll(albums);
+        if (musicLabel.getAlbums() == null) {
+            musicLabel.setAlbums(new ArrayList<>());
+        } else {
+            musicLabel.getAlbums().clear();
+        }
 
+        for (Album album : albums) {
+            album.setMusicLabel(musicLabel);
+        }
+
+        musicLabel.getAlbums().addAll(albums);
+    
         return musicLabel;
     }
 }

@@ -72,4 +72,11 @@ public class AlbumController {
     public ResponseEntity<Boolean> deleteAlbumById(@PathVariable Long id) {
         return ResponseEntity.ok(service.deleteAlbumById(id));
     }
+
+    @GetMapping("/musiclabel/{labelId}")
+    public ResponseEntity<List<AlbumReadDTO>> getLabelAlbums(@PathVariable Long labelId){
+        var albums = service.getLabelAlbums(labelId);
+        var dtoAlbums = albums.stream().map(converter::convertToDTO).toList();
+        return ResponseEntity.ok(dtoAlbums);
+    }
 }

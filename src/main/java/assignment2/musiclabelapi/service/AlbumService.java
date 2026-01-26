@@ -71,4 +71,10 @@ public class AlbumService {
 
         return album;
     }
+
+    public List<Album> getLabelAlbums(long labelId) {
+        return albumRepository.findAll().stream()
+                .filter(album -> album.getMusicLabel() != null && album.getMusicLabel().getId() == labelId)
+                .toList();
+    }
 }
