@@ -18,19 +18,19 @@ import java.util.stream.Collectors;
 @RequestMapping("/artist")
 public class ArtistController {
 
-    private final ArtistService artistService;
+    private final ArtistService service;
     private final ArtistDTOConverter converter;
     private final ArtistEntityConverter entityConverter;
 
     public ArtistController(ArtistService artistService, ArtistDTOConverter converter, ArtistEntityConverter entityConverter) {
-        this.artistService = artistService;
+        this.service = artistService;
         this.converter = converter;
         this.entityConverter = entityConverter;
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<ArtistReadDTO>> getAllArtists() {
-        var artists = artistService.getAllArtists();
+        var artists = service.getAllArtists();
         var artistDTOs = artists.stream()
                 .map(converter::convertToDTO)
                 .collect(Collectors.toList());
@@ -42,7 +42,7 @@ public class ArtistController {
         if (id == null) {
             return ResponseEntity.badRequest().build();
         }
-        var artist = artistService.getArtistById(id);
+        var artist = service.getArtistById(id);
         var artistDTO = converter.convertToDTO(artist);
         return ResponseEntity.ok(artistDTO);
     }
@@ -50,7 +50,7 @@ public class ArtistController {
     @PostMapping
     public ResponseEntity<ArtistReadDTO> createArtist(@RequestBody ArtistWriteDTO artistWriteDTO) {
         Artist artist = entityConverter.convertToEntity(artistWriteDTO);
-        Artist created = artistService.createArtist(artist);
+        Artist created = service.createArtist(artist);
         ArtistReadDTO artistReadDTO = converter.convertToDTO(created);
         return ResponseEntity.status(HttpStatus.CREATED).body(artistReadDTO);
     }
@@ -58,13 +58,20 @@ public class ArtistController {
     @PutMapping("/{id}")
     public ResponseEntity<ArtistReadDTO> updateArtist(@PathVariable Long id, @RequestBody ArtistWriteDTO artistWriteDTO) {
         Artist artist = entityConverter.convertToEntity(artistWriteDTO);
-        Artist updated = artistService.updateArtist(id, artist);
+        Artist updated = service.updateArtist(id, artist);
         ArtistReadDTO artistReadDTO = converter.convertToDTO(updated);
         return ResponseEntity.ok(artistReadDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteArtistById(@PathVariable Long id) {
-        return ResponseEntity.ok(artistService.deleteArtistById(id));
+        return ResponseEntity.ok(service.deleteArtistById(id));
+    }
+
+    @GetMapping("/album/{albumId}")
+    public ResponseEntity<List<ArtistReadDTO>> getAlbumArtists(@PathVariable Long albumId) {
+        var artists = service.getAlbumArtists(albumId);
+        var dtoArtists = artists.stream().map(converter::convertToDTO).toList();
+        return ResponseEntity.ok(dtoArtists);
     }
 }
