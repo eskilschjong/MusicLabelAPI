@@ -61,6 +61,14 @@ public class AlbumController {
         return ResponseEntity.ok(dtoAlbum);
     }
 
+    @PutMapping("/{id}/artists")
+    public ResponseEntity<AlbumReadDTO> updateAlbumArtists(@PathVariable Long id, @RequestBody List<Long> artistIds) {
+        System.out.println("Received: " + artistIds);
+        Album updated = service.updateAlbumArtists(id, artistIds);
+        AlbumReadDTO dtoAlbum = converter.convertToDTO(updated);
+        return ResponseEntity.ok(dtoAlbum);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteAlbumById(@PathVariable Long id) {
         return ResponseEntity.ok(service.deleteAlbumById(id));
