@@ -74,4 +74,11 @@ public class ArtistController {
         var dtoArtists = artists.stream().map(converter::convertToDTO).toList();
         return ResponseEntity.ok(dtoArtists);
     }
+
+    @GetMapping("/musiclabel/{labelId}")
+    public ResponseEntity<List<ArtistReadDTO>> getMusicLabelArtists(@PathVariable Long labelId) {
+        var artists = service.getMusicLabelArtists(labelId);
+        var dtoArtists = artists.stream().map(converter::convertToDTO).toList();
+        return ResponseEntity.ok(dtoArtists);
+    }
 }

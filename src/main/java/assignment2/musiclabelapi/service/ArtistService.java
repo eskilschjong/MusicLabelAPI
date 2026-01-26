@@ -45,4 +45,11 @@ public class ArtistService {
                 .filter(artist -> artist.getAlbums().stream().anyMatch(album -> album.getId() == albumId))
                 .toList();
     }
+
+    public List<Artist> getMusicLabelArtists(long musicLabelId) {
+        return artistRepository.findAll().stream()
+                .filter(artist -> artist.getAlbums().stream()
+                        .anyMatch(album -> album.getMusicLabel() != null && album.getMusicLabel().getId() == musicLabelId))
+                .toList();
+    }
 }
