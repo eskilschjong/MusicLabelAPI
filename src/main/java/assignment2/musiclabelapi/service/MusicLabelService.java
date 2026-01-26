@@ -1,18 +1,24 @@
 package assignment2.musiclabelapi.service;
 
+import assignment2.musiclabelapi.model.Album;
 import assignment2.musiclabelapi.model.MusicLabel;
 import assignment2.musiclabelapi.repository.MusicLabelRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class MusicLabelService {
 
     private final MusicLabelRepository musicLabelRepository;
+    private final AlbumService albumService;
 
-    public MusicLabelService(MusicLabelRepository musicLabelRepository) {
+    public MusicLabelService(MusicLabelRepository musicLabelRepository, AlbumService albumService) {
         this.musicLabelRepository = musicLabelRepository;
+        this.albumService = albumService;
     }
 
     public MusicLabel createMusicLabel(MusicLabel musicLabel) {
@@ -38,5 +44,24 @@ public class MusicLabelService {
             return true;
         }
         return false;
+    }
+
+    @Transactional
+    public MusicLabel updateMusicLabelAlbums(long id, List<Long> albumIds) {
+        MusicLabel musicLabel = musicLabelRepository.findById(id).orElse(null);
+        if (musicLabel == null) {
+            return null;
+        }
+
+        List<Album> albums = albumIds.stream()
+                .map(albumService::getAlbumById)
+                .filter(Objects::nonNull)
+                .toList();
+
+        musicLabel.setAlbums(new ArrayList<>());
+        musicLabel.getAlbums().clear();
+        musicLabel.getAlbums().addAll(albums);
+
+        return musicLabel;
     }
 }

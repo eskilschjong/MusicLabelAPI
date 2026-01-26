@@ -61,6 +61,13 @@ public class MusicLabelController {
         return ResponseEntity.ok(dtoMusicLabel);
     }
 
+    @PutMapping("/{id}/albums")
+    public ResponseEntity<MusicLabelReadDTO> updateMusicLabelAlbums(@PathVariable Long id, @RequestBody List<Long> albumIds) {
+        MusicLabel updated = musicLabelService.updateMusicLabelAlbums(id, albumIds);
+        MusicLabelReadDTO dtoMusicLabel = converter.convertToDTO(updated);
+        return ResponseEntity.ok(dtoMusicLabel);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteMusicLabelById(@PathVariable Long id) {
         return ResponseEntity.ok(musicLabelService.deleteMusicLabelById(id));
